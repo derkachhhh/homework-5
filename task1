@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <math.h>  // Для fabs - функція для абсолютного значення
+
+double babylonian_sqrt(double x, double tolerance) {
+    // Неможливо обчислити корінь з від'ємного числа
+    if (x < 0) {
+        return NAN;
+    }
+
+    // Початкове припущення — половина від x
+    double guess = x / 2.0;
+    double previous_guess;
+    int iterations = 0;
+
+    // Повторюємо, поки різниця між guess^2 і x не стане меншою за tolerance
+    do {
+        previous_guess = guess;
+        guess = (guess + x / guess) / 2.0;
+        iterations++;
+    } while (fabs(guess * guess - x) > tolerance);  // fabs для абсолютного значення
+
+    // Виводимо кількість ітерацій
+    printf("Кількість ітерацій: %d\n", iterations);
+    return guess;
+}
+
+int main() {
+    double number, tolerance;
+
+    // Введення числа і точності збіжності від користувача
+    printf("Введіть число для обчислення квадратного кореня: ");
+    scanf("%lf", &number);
+
+    printf("Введіть точність збіжності (наприклад, 0.01): ");
+    scanf("%lf", &tolerance);
+
+    // Обчислення і виведення результату
+    double result = babylonian_sqrt(number, tolerance);
+    printf("Наближений квадратний корінь: %lf\n", result);
+
+    return 0;
+}
