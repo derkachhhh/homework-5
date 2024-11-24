@@ -1,31 +1,29 @@
 #include <assert.h>
-#include <math.h>
+#include <stdio.h>
 #include "bisection.h"
 
-// Тестова функція f(x) = sin(x)
-double test_f(double x) {
-    return sin(x);
+int bisect_test() {
+    float x, y;
+
+    // Тест 1: Перетин для f(x) = x * sin(x) і g(x) = x * cos(x)
+    assert(bisection(1, 0, 1, 0, &x, &y) == 1); 
+    assert(fabs(x - 0) < 0.0001); // Очікувана x-координата (перетин) наближена до 0
+    assert(fabs(y - 0) < 0.0001); // Очікувана y-координата (перетин) наближена до 0
+
+    // Тест 2: Немає перетину (Приклад, де sin(x) і cos(x) не можуть перетинатися з даними параметрами)
+    assert(bisection(1, 0, 1, 10, &x, &y) == 0); 
+
+    // Тест 3: Перевірка перетину в іншій точці
+    assert(bisection(2, 0, 1, 0, &x, &y) == 1); 
+    assert(fabs(x - 1.5708) < 0.0001);  // Очікуваний перетин біля pi/2
+    assert(fabs(y - 0) < 0.0001); // Очікуваний y — наближений до 0
+
+    printf("Усі тести пройдено успішно!\n");
+
+    return 0;
 }
 
-// Тестова функція g(x) = cos(x)
-double test_g(double x) {
-    return cos(x);
-}
-
-void test_bisection() {
-    double tol = 0.001;
-    double intersection = bisection(test_f, test_g, 0, M_PI, tol);
-    assert(fabs(intersection - M_PI/4) < tol);  // Перевіряємо, чи наближається до PI/4
-
-    printf("Тест пройдено успішно!\n");
-}
-void run_tests() {
-    // Тест 1: Перетин функцій f(x) = sin(x) та g(x) = cos(x)
-    double tol = 0.01;
-    double intersection = bisection(sin, cos, 0, M_PI, tol);
-    assert(fabs(intersection - M_PI/4) < tol);
-}
-void assert() {
-    test_bisection();
+int main() {
+    bisect_test();
     return 0;
 }
